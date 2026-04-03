@@ -1,0 +1,67 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.defs",
+  "defs": {
+    "money": {
+      "type": "object",
+      "description": "A monetary amount with ISO 4217 currency code.",
+      "required": ["amount", "currency"],
+      "properties": {
+        "amount": {
+          "type": "string",
+          "description": "Decimal string representation of the amount, e.g. '12.50'.",
+          "maxLength": 32
+        },
+        "currency": {
+          "type": "string",
+          "description": "ISO 4217 currency code, e.g. 'USD', 'EUR'.",
+          "maxLength": 3,
+          "minLength": 3
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "description": "Physical location with optional granularity levels.",
+      "properties": {
+        "countryCode": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 country code.",
+          "maxLength": 2,
+          "minLength": 2
+        },
+        "region": {
+          "type": "string",
+          "description": "State, province, or region name.",
+          "maxLength": 128
+        },
+        "locality": {
+          "type": "string",
+          "description": "City, town, or village.",
+          "maxLength": 128
+        },
+        "postalCode": {
+          "type": "string",
+          "description": "Postal or zip code.",
+          "maxLength": 16
+        }
+      }
+    },
+    "conditionToken": {
+      "type": "token",
+      "description": "Condition of a physical item."
+    },
+    "listingTypeToken": {
+      "type": "token",
+      "description": "Whether a listing is for a physical good, digital good, or service."
+    },
+    "transactionStateToken": {
+      "type": "token",
+      "description": "Lifecycle state of a transaction."
+    },
+    "shipmentStateToken": {
+      "type": "token",
+      "description": "High-level state of a shipment."
+    }
+  }
+}

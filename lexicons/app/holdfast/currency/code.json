@@ -1,0 +1,44 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.currency.code",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Provider-curated ISO 4217 currency code record. Enables AppView filtering by supported currencies. Written to provider repo.",
+      "key": "literal:self",
+      "record": {
+        "type": "object",
+        "required": ["code", "name"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "ISO 4217 alphabetic currency code, e.g. 'USD'.",
+            "maxLength": 3,
+            "minLength": 3
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable currency name, e.g. 'United States Dollar'.",
+            "maxLength": 128,
+            "maxGraphemes": 64
+          },
+          "numericCode": {
+            "type": "string",
+            "description": "ISO 4217 numeric code, e.g. '840'.",
+            "maxLength": 3
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Display symbol, e.g. '$'.",
+            "maxLength": 8,
+            "maxGraphemes": 4
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether this currency is currently accepted on the network. False is the default/expected value when a currency is deprecated."
+          }
+        }
+      }
+    }
+  }
+}

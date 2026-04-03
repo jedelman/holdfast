@@ -1,0 +1,57 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.market.transaction",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Seller's acceptance of a buyer's offer. Written to the seller's repository. Constitutes the formal agreement. Strong references to both listing and offer.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["listing", "offer", "agreedPrice", "createdAt"],
+        "properties": {
+          "listing": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Strong reference to the app.holdfast.market.listing record."
+          },
+          "offer": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Strong reference to the app.holdfast.market.offer record being accepted."
+          },
+          "agreedPrice": {
+            "type": "ref",
+            "ref": "app.holdfast.defs#money",
+            "description": "Final agreed price, which may differ from the original offer price."
+          },
+          "state": {
+            "type": "string",
+            "description": "Lifecycle state of the transaction.",
+            "knownValues": [
+              "app.holdfast.defs#transactionStateToken",
+              "agreed",
+              "payment-pending",
+              "paid",
+              "shipped",
+              "delivered",
+              "complete",
+              "disputed",
+              "cancelled"
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "description": "Optional seller notes on the transaction.",
+            "maxLength": 2000,
+            "maxGraphemes": 1000
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.subscription.membership",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Public attestation that this DID has signed up for Holdfast. Written to the user's own repository. Serves as the app participation signal for backfill and discovery. Fixed record key 'self'.",
+      "key": "literal:self",
+      "record": {
+        "type": "object",
+        "required": ["createdAt"],
+        "properties": {
+          "handle": {
+            "type": "string",
+            "description": "User's handle at time of sign-up, for display purposes. Not authoritative — DID is the persistent identity.",
+            "maxLength": 256
+          },
+          "acceptedTermsAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Datetime the user accepted the Holdfast terms of participation."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

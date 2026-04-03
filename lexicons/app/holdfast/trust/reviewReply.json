@@ -1,0 +1,77 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.trust.reviewReply",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A one-shot reply by the reviewed party to a published review. Written by the trust provider after submission via app.holdfast.trust.submitReviewReply. Only the subject of the original review may reply. One reply per review.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["review", "author", "body", "createdAt"],
+        "properties": {
+          "review": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Strong reference to the app.holdfast.trust.review record being replied to."
+          },
+          "author": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the reply author. Must be the subject of the original review."
+          },
+          "body": {
+            "type": "string",
+            "description": "Reply text.",
+            "maxLength": 1000,
+            "maxGraphemes": 500
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "submitReviewReply": {
+      "type": "procedure",
+      "description": "Authenticated procedure for the subject of a review to submit a one-shot reply. Authentication required. Only the DID that is the subject of the referenced review may call this. Enforced by the provider.",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["review", "body"],
+          "properties": {
+            "review": {
+              "type": "ref",
+              "ref": "com.atproto.repo.strongRef",
+              "description": "The review being replied to."
+            },
+            "body": {
+              "type": "string",
+              "maxLength": 1000,
+              "maxGraphemes": 500
+            }
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "knownValues": ["published"]
+            }
+          }
+        }
+      },
+      "errors": [
+        {"name": "NotReviewSubject"},
+        {"name": "AlreadyReplied"},
+        {"name": "ReviewNotFound"}
+      ]
+    }
+  }
+}

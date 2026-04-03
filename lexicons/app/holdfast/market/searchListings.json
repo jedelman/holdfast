@@ -1,0 +1,78 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.market.searchListings",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Search and filter marketplace listings. Authentication optional; authenticated responses may include viewer-specific context.",
+      "parameters": {
+        "type": "params",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Full-text search query.",
+            "maxLength": 256
+          },
+          "listingType": {
+            "type": "string",
+            "description": "Filter by listing type.",
+            "knownValues": ["physical-good", "digital-good", "service"]
+          },
+          "currency": {
+            "type": "string",
+            "description": "ISO 4217 currency code to filter by.",
+            "maxLength": 3,
+            "minLength": 3
+          },
+          "priceMin": {
+            "type": "string",
+            "description": "Minimum price as decimal string."
+          },
+          "priceMax": {
+            "type": "string",
+            "description": "Maximum price as decimal string."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 filter for seller location or shipping destination.",
+            "maxLength": 2,
+            "minLength": 2
+          },
+          "category": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "condition": {
+            "type": "string",
+            "knownValues": ["new", "like-new", "good", "fair", "poor", "for-parts"]
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["listings"],
+          "properties": {
+            "listings": {
+              "type": "array",
+              "items": {
+                "type": "ref",
+                "ref": "app.holdfast.market.defs#listingView"
+              }
+            },
+            "cursor": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}

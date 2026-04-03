@@ -1,0 +1,38 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.trust.provider",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Declaration record that this DID is a Holdfast trust provider. Enables AppViews to enumerate and verify trusted review publishers. Fixed record key 'self'.",
+      "key": "literal:self",
+      "record": {
+        "type": "object",
+        "required": ["name", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable provider name.",
+            "maxLength": 256,
+            "maxGraphemes": 128
+          },
+          "description": {
+            "type": "string",
+            "description": "Provider description.",
+            "maxLength": 2000,
+            "maxGraphemes": 1000
+          },
+          "website": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 512
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

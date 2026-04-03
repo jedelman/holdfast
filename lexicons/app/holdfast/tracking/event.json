@@ -1,0 +1,76 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.tracking.event",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "An immutable carrier event record written by the tracking integration middleware. One record per event. Constitutes evidentiary proof of shipment state changes.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["shipment", "eventType", "occurredAt", "createdAt"],
+        "properties": {
+          "shipment": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Strong reference to the app.holdfast.tracking.shipment record."
+          },
+          "eventType": {
+            "type": "string",
+            "description": "Carrier event type, normalized across carriers.",
+            "knownValues": [
+              "label-created",
+              "picked-up",
+              "in-transit",
+              "out-for-delivery",
+              "delivery-attempted",
+              "delivered",
+              "held-at-facility",
+              "returned-to-sender",
+              "exception"
+            ],
+            "maxLength": 64
+          },
+          "description": {
+            "type": "string",
+            "description": "Raw carrier-provided event description.",
+            "maxLength": 512,
+            "maxGraphemes": 256
+          },
+          "location": {
+            "type": "ref",
+            "ref": "app.holdfast.defs#location",
+            "description": "Location of the event as reported by carrier."
+          },
+          "proofOfDelivery": {
+            "type": "object",
+            "description": "Delivery confirmation data when eventType is 'delivered'.",
+            "properties": {
+              "signedBy": {
+                "type": "string",
+                "maxLength": 128,
+                "maxGraphemes": 64
+              },
+              "image": {
+                "type": "blob",
+                "accept": ["image/jpeg", "image/png", "image/webp"],
+                "maxSize": 5000000,
+                "description": "Carrier-provided delivery photo if available."
+              }
+            }
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Datetime the event occurred according to the carrier."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Datetime this record was written."
+          }
+        }
+      }
+    }
+  }
+}

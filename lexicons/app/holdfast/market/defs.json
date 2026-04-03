@@ -1,0 +1,27 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.market.defs",
+  "defs": {
+    "listingView": {
+      "type": "object",
+      "description": "Hydrated view of a listing, including seller profile context and review summary.",
+      "required": ["uri", "cid", "record"],
+      "properties": {
+        "uri": {"type": "string", "format": "at-uri"},
+        "cid": {"type": "string", "format": "cid"},
+        "record": {"type": "unknown"},
+        "sellerDid": {"type": "string", "format": "did"},
+        "sellerHandle": {"type": "string"},
+        "reviewSummary": {"type": "ref", "ref": "app.holdfast.market.defs#reviewSummary"}
+      }
+    },
+    "reviewSummary": {
+      "type": "object",
+      "description": "Aggregated review stats for a DID.",
+      "properties": {
+        "count": {"type": "integer"},
+        "averageRating": {"type": "string", "description": "Decimal string, e.g. '4.7'"}
+      }
+    }
+  }
+}

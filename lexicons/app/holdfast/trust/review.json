@@ -1,0 +1,134 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.trust.review",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A double-blind review of a transaction participant, written by the trust provider after both parties have submitted via app.holdfast.trust.submitReview. Published to the firehose from the provider's repository.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["transaction", "reviewer", "subject", "role", "rating", "createdAt"],
+        "properties": {
+          "transaction": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Strong reference to the app.holdfast.market.transaction record this review concerns."
+          },
+          "reviewer": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the reviewing party."
+          },
+          "subject": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the party being reviewed."
+          },
+          "role": {
+            "type": "string",
+            "description": "Role of the subject in the transaction.",
+            "knownValues": [
+              "seller",
+              "buyer"
+            ]
+          },
+          "rating": {
+            "type": "integer",
+            "description": "Numeric rating from 1 to 5.",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "body": {
+            "type": "string",
+            "description": "Review text.",
+            "maxLength": 2000,
+            "maxGraphemes": 1000
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "description": "Optional strong references to evidentiary records (tracking events, etc.) supporting this review.",
+            "items": {
+              "type": "object",
+              "required": ["ref"],
+              "properties": {
+                "ref": {
+                  "type": "ref",
+                  "ref": "com.atproto.repo.strongRef"
+                }
+              }
+            },
+            "maxLength": 8
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "submitReview": {
+      "type": "procedure",
+      "description": "Authenticated procedure for a transaction participant to submit their review to the trust provider. Authentication required. The provider holds submissions until both parties have submitted or the window expires, then publishes app.holdfast.trust.review records.",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["transaction", "rating"],
+          "properties": {
+            "transaction": {
+              "type": "ref",
+              "ref": "com.atproto.repo.strongRef",
+              "description": "The transaction being reviewed."
+            },
+            "rating": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "body": {
+              "type": "string",
+              "maxLength": 2000,
+              "maxGraphemes": 1000
+            },
+            "evidenceRefs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["ref"],
+                "properties": {
+                  "ref": {
+                    "type": "ref",
+                    "ref": "com.atproto.repo.strongRef"
+                  }
+                }
+              },
+              "maxLength": 8
+            }
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "knownValues": [
+                "received",
+                "published"
+              ]
+            }
+          }
+        }
+      },
+      "errors": [
+        {"name": "NotAParticipant"},
+        {"name": "AlreadySubmitted"},
+        {"name": "WindowClosed"},
+        {"name": "TransactionNotFound"}
+      ]
+    }
+  }
+}

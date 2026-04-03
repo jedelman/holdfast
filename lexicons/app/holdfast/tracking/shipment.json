@@ -1,0 +1,76 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.tracking.shipment",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A shipment record linking a transaction to a carrier tracking identifier. Written to the seller's repository. Evidentiary anchor for delivery proof.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["transaction", "carrier", "trackingNumber", "createdAt"],
+        "properties": {
+          "transaction": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Strong reference to the app.holdfast.market.transaction record."
+          },
+          "carrier": {
+            "type": "string",
+            "description": "Carrier identifier.",
+            "knownValues": [
+              "usps",
+              "ups",
+              "fedex",
+              "dhl",
+              "canada-post",
+              "royal-mail",
+              "australia-post",
+              "other"
+            ],
+            "maxLength": 64
+          },
+          "carrierName": {
+            "type": "string",
+            "description": "Human-readable carrier name when carrier is 'other'.",
+            "maxLength": 128,
+            "maxGraphemes": 64
+          },
+          "trackingNumber": {
+            "type": "string",
+            "description": "Carrier-assigned tracking number.",
+            "maxLength": 128
+          },
+          "trackingUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "Direct tracking URL if available.",
+            "maxLength": 512
+          },
+          "state": {
+            "type": "string",
+            "description": "High-level shipment state.",
+            "knownValues": [
+              "app.holdfast.defs#shipmentStateToken",
+              "label-created",
+              "in-transit",
+              "out-for-delivery",
+              "delivered",
+              "failed-delivery",
+              "returned"
+            ]
+          },
+          "estimatedDelivery": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Carrier-provided estimated delivery datetime."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

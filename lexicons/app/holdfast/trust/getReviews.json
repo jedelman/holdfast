@@ -1,0 +1,64 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.trust.getReviews",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Get published reviews for a given DID, optionally filtered by role. Returns hydrated review records including any review replies.",
+      "parameters": {
+        "type": "params",
+        "required": ["subject"],
+        "properties": {
+          "subject": {
+            "type": "string",
+            "format": "at-identifier",
+            "description": "DID or handle of the subject whose reviews to retrieve."
+          },
+          "role": {
+            "type": "string",
+            "description": "Filter by the subject's role in the transaction.",
+            "knownValues": ["seller", "buyer"]
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["reviews"],
+          "properties": {
+            "reviews": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["review"],
+                "properties": {
+                  "review": {"type": "ref", "ref": "com.atproto.repo.strongRef"},
+                  "record": {"type": "unknown"},
+                  "reply": {
+                    "type": "object",
+                    "description": "The one-shot reply from the subject, if submitted.",
+                    "properties": {
+                      "ref": {"type": "ref", "ref": "com.atproto.repo.strongRef"},
+                      "record": {"type": "unknown"}
+                    }
+                  }
+                }
+              }
+            },
+            "summary": {"type": "ref", "ref": "app.holdfast.market.defs#reviewSummary"},
+            "cursor": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}

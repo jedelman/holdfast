@@ -1,0 +1,33 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.subscription.cancellation",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Public attestation that this DID has cancelled their Holdfast membership. Written to the user's own repository. Deletion of the membership record alone is insufficient — this record signals intentional departure and triggers AppView deactivation.",
+      "key": "literal:self",
+      "record": {
+        "type": "object",
+        "required": ["createdAt"],
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "Optional user-provided reason for cancellation.",
+            "maxLength": 1000,
+            "maxGraphemes": 500,
+            "knownValues": [
+              "no-longer-needed",
+              "switching-platform",
+              "privacy",
+              "other"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

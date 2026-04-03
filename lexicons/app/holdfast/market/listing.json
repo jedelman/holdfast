@@ -1,0 +1,133 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.market.listing",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A marketplace listing for a good or service. Written to the seller's repository.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["title", "price", "listingType", "createdAt"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Short title for the listing.",
+            "maxLength": 512,
+            "maxGraphemes": 128
+          },
+          "description": {
+            "type": "string",
+            "description": "Full listing description. Markdown supported for long-form text.",
+            "maxLength": 10000,
+            "maxGraphemes": 5000
+          },
+          "price": {
+            "type": "ref",
+            "ref": "app.holdfast.defs#money"
+          },
+          "listingType": {
+            "type": "string",
+            "description": "Type of listing.",
+            "knownValues": [
+              "app.holdfast.defs#listingTypeToken",
+              "physical-good",
+              "digital-good",
+              "service"
+            ]
+          },
+          "condition": {
+            "type": "string",
+            "description": "Condition of item. Applicable to physical goods.",
+            "knownValues": [
+              "app.holdfast.defs#conditionToken",
+              "new",
+              "like-new",
+              "good",
+              "fair",
+              "poor",
+              "for-parts"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "description": "Primary category tag for discovery and filtering.",
+            "maxLength": 128,
+            "maxGraphemes": 64
+          },
+          "tags": {
+            "type": "array",
+            "description": "Additional searchable tags.",
+            "items": {
+              "type": "object",
+              "required": ["value"],
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "maxLength": 64,
+                  "maxGraphemes": 32
+                }
+              }
+            },
+            "maxLength": 10
+          },
+          "location": {
+            "type": "ref",
+            "ref": "app.holdfast.defs#location"
+          },
+          "images": {
+            "type": "array",
+            "description": "Image blobs attached to the listing.",
+            "items": {
+              "type": "object",
+              "required": ["image"],
+              "properties": {
+                "image": {
+                  "type": "blob",
+                  "accept": ["image/jpeg", "image/png", "image/webp"],
+                  "maxSize": 5000000
+                },
+                "alt": {
+                  "type": "string",
+                  "description": "Alt text for accessibility.",
+                  "maxLength": 512,
+                  "maxGraphemes": 256
+                }
+              }
+            },
+            "maxLength": 8
+          },
+          "shipsTo": {
+            "type": "array",
+            "description": "ISO 3166-1 alpha-2 country codes the seller ships to. Empty means local/pickup only.",
+            "items": {
+              "type": "object",
+              "required": ["countryCode"],
+              "properties": {
+                "countryCode": {
+                  "type": "string",
+                  "maxLength": 2,
+                  "minLength": 2
+                }
+              }
+            },
+            "maxLength": 250
+          },
+          "status": {
+            "type": "string",
+            "description": "Current listing status.",
+            "knownValues": [
+              "active",
+              "sold",
+              "withdrawn"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

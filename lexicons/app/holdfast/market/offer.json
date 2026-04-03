@@ -1,0 +1,58 @@
+{
+  "lexicon": 1,
+  "id": "app.holdfast.market.offer",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A buyer's offer on a listing. Written to the buyer's repository. Strong reference to the target listing.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["listing", "offerPrice", "createdAt"],
+        "properties": {
+          "listing": {
+            "type": "ref",
+            "ref": "com.atproto.repo.strongRef",
+            "description": "Strong reference (uri + cid) to the app.holdfast.market.listing record being offered on."
+          },
+          "offerPrice": {
+            "type": "ref",
+            "ref": "app.holdfast.defs#money",
+            "description": "Offered price. May differ from listing price for negotiation."
+          },
+          "message": {
+            "type": "string",
+            "description": "Optional message from buyer to seller.",
+            "maxLength": 2000,
+            "maxGraphemes": 1000
+          },
+          "shippingAddress": {
+            "type": "ref",
+            "ref": "app.holdfast.defs#location",
+            "description": "Destination for physical goods shipment."
+          },
+          "status": {
+            "type": "string",
+            "description": "Current offer status.",
+            "knownValues": [
+              "pending",
+              "accepted",
+              "declined",
+              "withdrawn",
+              "expired"
+            ]
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Optional offer expiry datetime."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}
