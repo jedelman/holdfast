@@ -4,6 +4,18 @@
 
 Holdfast is a governance project — not a platform. Its goal is to define an open, interoperable standard for peer-to-peer commerce on atproto, with a trust and reputation layer that keeps accountability on-chain without centralizing control.
 
+## Status: v0.1
+
+The lexicon spec (16 files, below) is complete and validated. A minimal
+Cloudflare Worker AppView stub (`worker/`) serves the lexicons over HTTP and
+answers one live query (`searchListings`) against D1 — but nothing feeds
+that D1 table yet, so it currently returns an empty result set. No dispute
+handling, review submission, tracking ingestion, or deployment has shipped.
+Full backlog and what's deferred to v0.2: `TASKS.md`.
+
+- Validate the lexicons: `node scripts/validate-lexicons.mjs`
+- Run the AppView stub locally: see `worker/README.md`
+
 ## What Holdfast is
 
 - A **lexicon spec** defining the record types and XRPC endpoints for decentralized trade
