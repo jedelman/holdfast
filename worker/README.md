@@ -22,12 +22,20 @@ npm run dev        # wrangler dev on http://localhost:8787
 
 ## Deploying
 
-Requires a Cloudflare account with `wrangler login` (or an API token) —
-not something this session can do on your behalf.
+The D1 database (`holdfast`, id `ebc48f27-50fb-4c48-ab00-db547dd5c4d6`) and
+Cloudflare Workers Builds git integration are already set up, deploying on
+push to `main`. Deploys will fail until the schema has been applied to the
+*remote* database at least once — that step needs your own `wrangler login`
+or API token, so it's not something this session can do on your behalf:
 
 ```bash
-npx wrangler d1 create holdfast   # then copy the database_id into wrangler.toml
 npx wrangler d1 execute holdfast --remote --file=./schema.sql
+```
+
+After that, `git push` to `main` (via a merged PR) triggers Workers Builds
+to run `npx wrangler deploy` automatically. Manual deploy also works:
+
+```bash
 npm run deploy
 ```
 
