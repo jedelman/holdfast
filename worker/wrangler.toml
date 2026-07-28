@@ -1,0 +1,10 @@
+name = "holdfast-appview"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Created with `wrangler d1 create holdfast` — replace database_id with the
+# real one before deploying. See worker/README.md.
+[[d1_databases]]
+binding = "DB"
+database_name = "holdfast"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
